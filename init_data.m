@@ -13,6 +13,14 @@ fprintf('================================================================\n');
 fprintf('\n[1] 读取系统数据...\n');
 mpc = loadcase('case33bw');
 % mpc = loadcase('grid_IEEE123');
+% grid_IEEE123 is cited from：
+% L. Bobo, A. Venzke, S. Chatzivasileiadis, "Second-Order Cone Relaxations
+% of the Optimal Power Flow for Active Distribution Grids", 2020. Available
+% online: https://arxiv.org/abs/2001.00898
+%
+% W. H. Kersting, “Radial distribution test feeders,” in Conference
+% Proceedings of the 2001 IEEE Power Engineering Society Winter Meeting,
+% 2001. vol. 2, pp. 908–912
 baseMVA = mpc.baseMVA;
 num_bus = size(mpc.bus, 1);
 num_branch = size(mpc.branch, 1);
