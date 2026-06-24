@@ -1,10 +1,10 @@
 %% run_sensitivity.m
-% KDE-DRCCO ²ÎÊıÃô¸ĞĞÔ
+% KDE-DRCCO å‚æ•°æ•æ„Ÿæ€§
 
 clear; clc; close all;
-addpath('D:/CÅÌÀ´µÄ/casadi-windows-matlabR2016a-v3.5.5');
+addpath('casadi path');
 fprintf('================================================================\n');
-fprintf('  KDE-DRCCO tau Ãô¸ĞĞÔ \n ');
+fprintf('  KDE-DRCCO tau æ•æ„Ÿæ€§ \n ');
 fprintf('================================================================\n');
 
 %% CasADi
@@ -12,10 +12,10 @@ try
     import casadi.*
     casadi.SX.sym('t_chk');
 catch
-    error('CasADi Î´¼ÓÔØ');
+    error('CasADi æœªåŠ è½½');
 end
 
-%% ¼ÓÔØ
+%% åŠ è½½
 if ~exist('init_data.mat','file'), run('init_data.m'); end
 load('init_data.mat');
 
@@ -23,12 +23,12 @@ sf = shared_functions();
 
 baseline_fn = 'baseline_results.mat';
 if ~exist(baseline_fn,'file')
-    error('ÇëÏÈÔËĞĞ run_baseline.m');
+    error('è¯·å…ˆè¿è¡Œ run_baseline.m');
 end
 bl = load(baseline_fn);
 bl = load(baseline_fn);
 
-%% tau É¨Ãè
+%% tau æ‰«æ
 tau_values = [0.0001, 0.001, 0.005, 0.01, 0.05, 0.1, 0.2, 0.5, 1.0];
 n_tau = length(tau_values);
 
@@ -46,7 +46,7 @@ n_mc = 5000;
 
 for ti = 1:n_tau
     tau_i = tau_values(ti);
-    fprintf('\n  --- tau = %.5f (µÚ%d/%d) ---\n', tau_i, ti, n_tau);
+    fprintf('\n  --- tau = %.5f (ç¬¬%d/%d) ---\n', tau_i, ti, n_tau);
     
     tc_i = 0; ts_i = 0; tcu_i = 0;
     mc_V_i = zeros(1, T_periods); mc_BC_i = zeros(1, T_periods);
@@ -143,13 +143,13 @@ for ti = 1:n_tau
         tc_i, exp1_reliability(ti), exp1_mc_viol_max(ti), exp1_time(ti));
 end
 
-%% ²Î¿¼
+%% å‚è€ƒ
 m1_cost_ref = bl.tc(1);
 m1_rel_ref = 100 - mean(max(bl.mc_V(1,:), bl.mc_BC(1,:)));
 m2_cost_ref = bl.tc(2);
 m2_rel_ref = 100 - mean(max(bl.mc_V(2,:), bl.mc_BC(2,:)));
 
-fprintf('\n  ===== ÊµÑé1 »ã×Ü±í =====\n');
+fprintf('\n  ===== å®éªŒ1 æ±‡æ€»è¡¨ =====\n');
 fprintf('  tau        | OptCost($)  | MCCost($)   | Reliability(%%) | MaxViol(%%) | AvgIter | Time(s)\n');
 for ti=1:n_tau
     fprintf('  %.5f  | %11.2f | %11.2f | %14.2f | %10.2f | %7.1f | %6.1f\n', ...
@@ -163,7 +163,7 @@ save_fn = 'exp1_results.mat';
 save(save_fn, 'tau_values','exp1_cost','exp1_reliability','exp1_shed','exp1_dgcut',...
     'exp1_mc_viol_max','exp1_mc_viol_avg','exp1_avg_iter','exp1_time','exp1_mc_cost',...
     'm1_cost_ref','m1_rel_ref','m2_cost_ref','m2_rel_ref');
-%% »æÍ¼
+%% ç»˜å›¾
 figure('Name','Pareto Front');
 plot(exp1_cost, exp1_reliability, '-o','LineWidth',1.8,'MarkerSize',6); hold on;
 plot(m2_cost_ref, m2_rel_ref, 's','MarkerSize',10,'MarkerFaceColor','g');
@@ -180,5 +180,5 @@ yyaxis right; semilogx(tau_values, exp1_reliability, '-o','LineWidth',1.8);
 ylabel('Reliability (%)');
 xlabel('\tau'); title('\tau Sensitivity'); grid on; box on;
 
-fprintf('\n  ÊµÑé1Íê³É!\n');
+fprintf('\n  å®éªŒ1å®Œæˆ!\n');
 fprintf('================================================================\n');
